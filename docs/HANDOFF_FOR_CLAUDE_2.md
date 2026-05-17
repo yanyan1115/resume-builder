@@ -34,7 +34,7 @@
 ```
 src/
   schemas/resumeSchema.js     ← canonical schema，basics.photo 已加
-  stores/resumeStore.js       ← Pinia，含 syncDraftToBackend / loadFromBackend
+  stores/resumeStore.js       ← Pinia，含 debounced backend sync / loadFromBackend
   api/
     client.js                 ← axios，JWT interceptor
     resumeApi.js              ← list/get/create/update/remove
@@ -91,13 +91,11 @@ Cora 和上一个小克商量好的方向：**JD 关键词提取 + 简历匹配�
 1. 项目已经是 Claude Code 协作，论文里写起来更有故事性
 2. Sonnet 4.6 性价比高，适合关键词提取这种轻量任务
 
-### 模型推荐
+### 模型配置建议
 
-```
-claude-sonnet-4-6  (claude-sonnet-4-6-20251001 或最新)
-```
+前端 Model 字段应保持可选：留空时使用后端环境变量配置的 provider 默认模型，或由用户按服务商当前文档填写明确模型名。不要在代码或文档中承诺不稳定、未确认公开的模型 ID。
 
-调用方式参考 `src/api/client.js` 的 axios 风格，后端用 `@anthropic-ai/sdk`。
+调用方式参考 `src/api/client.js` 的 axios 风格，后端用 `@anthropic-ai/sdk` 或 OpenAI-compatible SDK。
 
 ---
 

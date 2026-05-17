@@ -106,11 +106,19 @@ Before tagging this release, run the checks in [RELEASE_CHECKLIST.md](RELEASE_CH
 ### Backend Draft Sync
 
 - Added `src/api/resumeApi.js` with list / get / create / update / remove wrappers over the existing Axios client.
-- Extended `resumeStore.js` with `syncDraftToBackend`, `loadFromBackend`, and `deleteDraftWithSync` actions.
+- Extended `resumeStore.js` with debounced backend sync, `loadFromBackend`, and `deleteDraftWithSync` actions.
 - `persistActiveDraft` now triggers async cloud sync after local save; `backendId` stored in `draft.settings` maps local UUID to MongoDB `_id`.
+- Sync is local-first and now exposes `syncStatus` / `lastSyncError` in the store so failures are visible without blocking editing.
 - `App.vue` calls `loadFromBackend` on mount; remote wins on `updatedAt` conflict.
 - Fixed `resumeController.js` `updateResume` variable name collision (`const resume` redeclaration).
 - Unauthenticated users: zero behavior change.
+
+### AI Follow-up
+
+- Added `/api/ai/analyze` proxy flow for optional JD matching.
+- Kept API key handling transparent: browser localStorage -> local/self-hosted backend proxy -> provider request.
+- Removed hardcoded default-model promises from docs and switched to optional provider model configuration.
+- Added lightweight AI proxy safeguards: request body limit and per-client in-memory rate limiting, configurable via backend environment variables.
 
 ### Profile Photo Upload
 

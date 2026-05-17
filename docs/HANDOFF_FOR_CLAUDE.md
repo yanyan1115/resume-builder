@@ -1,6 +1,6 @@
 # Handoff For Claude Code
 
-This document hands off the current `v0.1.0-beta` state of Resume Builder to Claude Code or another implementation agent.
+This document hands off the pre-AI `v0.1.0-beta` state of Resume Builder to Claude Code or another implementation agent. AI support was added later in `docs/HANDOFF_FOR_CLAUDE_2.md`.
 
 ## 1. Repository And Branch
 
@@ -233,7 +233,7 @@ These warnings are documented and do not block `v0.1.0-beta`.
 ## 8. Current Known Limitations
 
 - Backend draft synchronization is not implemented.
-- AI features are not implemented.
+- AI features are not implemented in this beta handoff; see [HANDOFF_FOR_CLAUDE_2.md](HANDOFF_FOR_CLAUDE_2.md) for the later AI follow-up.
 - Uploaded template previews are not a real template contribution workflow yet.
 - Bundle size needs a future dependency/performance pass.
 - Mobile app work is intentionally out of scope for beta.
@@ -391,7 +391,7 @@ Then work on Priority 1 and Priority 2:
 1. Template optimization.
 2. UI beautification.
 
-Do not start AI features yet.
+Do not start AI features yet in this handoff; use `docs/HANDOFF_FOR_CLAUDE_2.md` if you are continuing the later AI work.
 Do not reintroduce ResumeApp or backend/uploads into the beta branch.
 Do not change the canonical schema unless absolutely necessary.
 Keep local draft management, template switching, preview, and print export working.
@@ -402,4 +402,3 @@ Before finishing, run:
 
 Summarize changed files, visual changes, validation results, and any remaining risks.
 ```
-

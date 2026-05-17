@@ -22,7 +22,7 @@ Resume Builder 是一个开源、可自托管的简历生成器，基于 Vue、P
 - 保留 legacy screenshot PDF、HTML、Word 导出作为次要路径。
 - Express/MongoDB 后端：认证、简历 CRUD API 已完整实现。
 - **后端草稿同步**：登录用户的草稿自动同步到后端，local-first 策略，未登录用户零感知。
-- **AI JD 匹配分析**：粘贴招聘 JD，AI 自动打分（0–100）并列出命中/缺失关键词和改进建议。支持 Claude、OpenAI、DeepSeek，API key 仅存浏览器本地，不经过服务器。
+- **AI JD 匹配分析**：粘贴招聘 JD，AI 自动打分（0–100）并列出命中/缺失关键词和改进建议。支持 Claude、OpenAI、DeepSeek。API key 保存在浏览器本地；分析时会发送到你的本地/自托管后端代理，再由后端转发给 AI 服务商。
 
 ## 当前状态
 
@@ -127,16 +127,16 @@ Resume Builder 内置 AI JD 匹配分析，帮助你判断简历与招聘岗位�
 
 ### 支持的 AI Provider
 
-| Provider | 默认模型 | 获取 Key |
+| Provider | Model | 获取 Key |
 |----------|----------|----------|
-| Claude (Anthropic) | `claude-sonnet-4-6` | [console.anthropic.com](https://console.anthropic.com) |
-| OpenAI | `gpt-4o` | [platform.openai.com](https://platform.openai.com/api-keys) |
-| DeepSeek | `deepseek-v4-flash` | [platform.deepseek.com](https://platform.deepseek.com) |
+| Claude (Anthropic) | 可选，建议按 Anthropic 当前文档填写 | [console.anthropic.com](https://console.anthropic.com) |
+| OpenAI | 可选，建议按 OpenAI 当前文档填写 | [platform.openai.com](https://platform.openai.com/api-keys) |
+| DeepSeek | 可选，建议按 DeepSeek 当前文档填写 | [platform.deepseek.com](https://platform.deepseek.com) |
 
 ### 使用步骤
 
 1. 打开简历编辑器（`/editor`），滚动到页面底部，展开 **AI Job Match Analysis** 折叠面板。
-2. 点击 **Configure AI**，选择 Provider 并填入你的 API Key（可选填 Model 覆盖默认值）。
+2. 点击 **Configure AI**，选择 Provider 并填入你的 API Key。Model 可选：留空时使用后端环境变量配置的默认模型，或按服务商当前文档填写明确模型名。
 3. 点击 **Save** 保存配置。
 4. 将目标岗位的招聘 JD 粘贴到文本框，点击 **Analyze Match**。
 5. 查看匹配结果：
@@ -147,7 +147,7 @@ Resume Builder 内置 AI JD 匹配分析，帮助你判断简历与招聘岗位�
 
 ### 隐私说明
 
-API Key **仅存储在你的浏览器 localStorage 中**，不会发送或保存到本项目服务器。每次分析时 Key 随请求发送给对应 AI 服务商，之后立即丢弃。
+API Key **保存于你的浏览器 localStorage**。每次分析时，前端会把 key 发送到你运行的本地/自托管后端代理 `/api/ai/analyze`，后端再转发给对应 AI 服务商。本项目不会把 key 写入数据库、不会持久化保存，也不会主动记录 key；请仍按敏感凭据对待浏览器、本地后端日志和部署环境。
 
 ## 文档
 
@@ -160,7 +160,8 @@ API Key **仅存储在你的浏览器 localStorage 中**，不会发送或保存
 - [Release Notes](docs/RELEASE_NOTES.md)
 - [Release Checklist](docs/RELEASE_CHECKLIST.md)
 - [示例简历](docs/SAMPLE_RESUME.md)
-- [Claude Code 交接文档](docs/HANDOFF_FOR_CLAUDE.md)
+- [Claude Code 交接文档（beta 前交接）](docs/HANDOFF_FOR_CLAUDE.md)
+- [Claude Code 交接文档 v2（post-beta / AI 后续）](docs/HANDOFF_FOR_CLAUDE_2.md)
 - [贡献指南](CONTRIBUTING.md)
 
 ## 路线图摘要
@@ -215,7 +216,7 @@ The project is still in early beta, but it is ready for contributors to run loca
 - Legacy screenshot PDF, HTML, and Word export paths retained as secondary options.
 - Express/MongoDB backend with full resume CRUD API and JWT authentication.
 - **Backend draft sync**: logged-in users' drafts sync automatically — local-first, silent on network failure; unauthenticated users see zero behavior change.
-- **AI JD match analysis**: paste a job description and get an instant match score (0–100), matched/missing keywords, and improvement advice. Supports Claude, OpenAI, and DeepSeek — API key stored in browser localStorage only, never on the server.
+- **AI JD match analysis**: paste a job description and get an instant match score (0–100), matched/missing keywords, and improvement advice. Supports Claude, OpenAI, and DeepSeek. The API key is saved in browser localStorage; during analysis it is sent to your local/self-hosted backend proxy and forwarded to the AI provider.
 
 ## Current Status
 
@@ -230,7 +231,7 @@ The project has completed Stages 0–6.5 and the following post-beta enhancement
 - Local draft management.
 - Open-source showcase and QA polish.
 - **Post-beta**: Login/Register page visual unification, HomePage glassmorphism redesign, backend draft sync (local-first), and profile photo upload across all templates.
-- **Stage 7**: AI JD match analysis with multi-provider support (Claude / OpenAI / DeepSeek); API key stored in browser localStorage only.
+- **Stage 7**: AI JD match analysis with multi-provider support (Claude / OpenAI / DeepSeek); API key saved in browser localStorage and proxied through the local/self-hosted backend per request.
 
 ## Screenshots
 
@@ -320,16 +321,16 @@ Resume Builder includes an AI-powered job description (JD) match analysis to hel
 
 ### Supported Providers
 
-| Provider | Default Model | Get API Key |
+| Provider | Model | Get API Key |
 |----------|---------------|-------------|
-| Claude (Anthropic) | `claude-sonnet-4-6` | [console.anthropic.com](https://console.anthropic.com) |
-| OpenAI | `gpt-4o` | [platform.openai.com](https://platform.openai.com/api-keys) |
-| DeepSeek | `deepseek-v4-flash` | [platform.deepseek.com](https://platform.deepseek.com) |
+| Claude (Anthropic) | Optional; follow Anthropic's current docs | [console.anthropic.com](https://console.anthropic.com) |
+| OpenAI | Optional; follow OpenAI's current docs | [platform.openai.com](https://platform.openai.com/api-keys) |
+| DeepSeek | Optional; follow DeepSeek's current docs | [platform.deepseek.com](https://platform.deepseek.com) |
 
 ### How to Use
 
 1. Open the resume editor (`/editor`) and scroll to the bottom. Expand the **AI Job Match Analysis** panel.
-2. Click **Configure AI**, choose a provider, and enter your API key (optionally override the default model).
+2. Click **Configure AI**, choose a provider, and enter your API key. The Model field is optional: leave it blank to use the backend environment default, or enter an explicit current model name from the provider docs.
 3. Click **Save**.
 4. Paste the target job description into the text box and click **Analyze Match**.
 5. Review your results:
@@ -340,7 +341,7 @@ Resume Builder includes an AI-powered job description (JD) match analysis to hel
 
 ### Privacy
 
-Your API key is stored **only in your browser's localStorage** and is never persisted on this project's server. It is forwarded to the AI provider per request and immediately discarded.
+Your API key is stored in **your browser's localStorage**. For each analysis request, the frontend sends it to your local/self-hosted backend proxy at `/api/ai/analyze`, and the backend forwards it to the selected AI provider. This project does not write the key to the database, persist it on the server, or intentionally log it; treat browser storage, backend logs, and deployment environments as sensitive.
 
 ## Documentation
 
@@ -353,7 +354,8 @@ Your API key is stored **only in your browser's localStorage** and is never pers
 - [Release Notes](docs/RELEASE_NOTES.md)
 - [Release Checklist](docs/RELEASE_CHECKLIST.md)
 - [Sample Resume](docs/SAMPLE_RESUME.md)
-- [Claude Code Handoff](docs/HANDOFF_FOR_CLAUDE.md)
+- [Claude Code Handoff (pre-AI beta handoff)](docs/HANDOFF_FOR_CLAUDE.md)
+- [Claude Code Handoff v2 (post-beta / AI follow-up)](docs/HANDOFF_FOR_CLAUDE_2.md)
 - [Contribution Guide](CONTRIBUTING.md)
 
 ## Roadmap Summary

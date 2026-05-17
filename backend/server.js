@@ -34,8 +34,10 @@ const connectDB = async () => {
 connectDB();
 
 // 中间件
-app.use(express.json());  // 解析 JSON 请求
 app.use(cors());  // 允许跨域访问
+// AI analysis has its own smaller body limit and rate limit in routes/aiRoutes.js.
+app.use('/api/ai', aiRoutes);
+app.use(express.json());  // 解析 JSON 请求
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // 允许 Express 静态访问上传文件夹
 
 // 测试 API
@@ -51,9 +53,6 @@ app.use('/api/resumes', resumeRoutes);  // 简历相关 API 路由
 
 // 模版 API 路由
 app.use('/api/templates', templateRoutes);// 模版相关 API 路由
-
-// AI 分析路由（key 由客户端携带，不存服务器）
-app.use('/api/ai', aiRoutes);
 
 // 服务器监听端口
 const PORT = process.env.PORT || 5000;

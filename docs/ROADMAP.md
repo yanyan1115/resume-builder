@@ -229,6 +229,7 @@ Goal: Add useful differentiation without making AI mandatory.
 - Add bullet point improvement suggestions.
 - Add optional provider configuration.
 - Keep AI calls transparent and user-controlled.
+- Keep provider model configuration explicit or backend-configured; do not rely on unstable default model IDs in docs or code.
 
 Exit criteria:
 

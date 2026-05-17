@@ -32,11 +32,14 @@
                 :placeholder="keyPlaceholder"
               />
             </el-form-item>
-            <el-form-item label="Model (optional, leave blank for default)">
+            <el-form-item label="Model (optional; leave blank to use provider default or fill current model name)">
               <el-input v-model="settingsForm.model" :placeholder="modelPlaceholder" />
+              <p class="settings-note">
+                Leave this blank if your backend/provider is configured with a default model; otherwise enter the current model name from the provider docs.
+              </p>
             </el-form-item>
             <p class="settings-note">
-              Your API key is stored only in your browser (localStorage) and is never saved to our server.
+              Your API key stays in browser localStorage until you run analysis, then it is sent to your local or self-hosted backend proxy and forwarded to the selected provider. It is not stored in this project’s database and should not be logged.
             </p>
             <div class="settings-actions">
               <el-button type="primary" size="small" @click="saveSettings">Save</el-button>
@@ -147,9 +150,9 @@ import { ArrowDown, Setting, Warning } from '@element-plus/icons-vue'
 import { getAiConfig, saveAiConfig, clearAiConfig, hasAiConfig, analyzeMatch } from '@/api/aiApi'
 
 const PROVIDER_DEFAULTS = {
-  claude:   { key: 'sk-ant-…',          model: 'claude-sonnet-4-6' },
-  openai:   { key: 'sk-…',              model: 'gpt-4o' },
-  deepseek: { key: 'sk-…',              model: 'deepseek-v4-flash' },
+  claude: { key: 'sk-ant-…' },
+  openai: { key: 'sk-…' },
+  deepseek: { key: 'sk-…' },
 }
 
 export default {
@@ -189,7 +192,7 @@ export default {
       return PROVIDER_DEFAULTS[this.settingsForm.providerType]?.key || 'sk-…'
     },
     modelPlaceholder() {
-      return PROVIDER_DEFAULTS[this.settingsForm.providerType]?.model || ''
+      return 'Enter current model name or leave blank for backend/provider default'
     },
     scoreClass() {
       const s = this.result?.score || 0

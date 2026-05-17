@@ -29,7 +29,12 @@ export const useResumeStore = defineStore('resume', {
   state: () => ({
     activeDraftId: null,
     activeResume: createDefaultResume(),
-    drafts: []
+    drafts: [],
+    syncStatus: 'idle',
+    lastSyncError: '',
+    syncTimerId: null,
+    syncInFlight: false,
+    queuedSyncDraft: null
   }),
 
   getters: {
@@ -118,6 +123,7 @@ export const useResumeStore = defineStore('resume', {
       this.activeResume = copy
       this.activeDraftId = copy.id
       this.persistDrafts()
+      this.scheduleBackendSync(copy)
       return copy
     },
 
@@ -137,6 +143,7 @@ export const useResumeStore = defineStore('resume', {
       }
 
       this.persistDrafts()
+      this.scheduleBackendSync(draft)
       return draft
     },
 
@@ -199,7 +206,7 @@ export const useResumeStore = defineStore('resume', {
 
       this.persistDrafts()
       // 异步云同步，不阻塞本地操作
-      this.syncDraftToBackend(resume)
+      this.scheduleBackendSync(resume)
     },
 
     // ── 云同步（local-first，仅登录用户，失败静默） ──────────────────
@@ -208,9 +215,36 @@ export const useResumeStore = defineStore('resume', {
       return !!localStorage.getItem('token')
     },
 
-    // 将单条本地草稿同步到后端（create 或 update）
-    async syncDraftToBackend(draft) {
-      if (!this.isLoggedIn()) return
+    scheduleBackendSync(draft) {
+      if (!this.isLoggedIn()) {
+        this.syncStatus = 'idle'
+        this.lastSyncError = ''
+        return
+      }
+
+      this.queuedSyncDraft = draft
+      this.lastSyncError = ''
+      this.syncStatus = 'syncing'
+
+      if (this.syncTimerId) {
+        clearTimeout(this.syncTimerId)
+      }
+
+      this.syncTimerId = setTimeout(() => {
+        this.syncTimerId = null
+        this.flushBackendSync()
+      }, 900)
+    },
+
+    async flushBackendSync() {
+      if (!this.isLoggedIn() || this.syncInFlight || !this.queuedSyncDraft) return
+
+      const draft = this.queuedSyncDraft
+      this.queuedSyncDraft = null
+      this.syncInFlight = true
+      this.syncStatus = 'syncing'
+      this.lastSyncError = ''
+
       try {
         const backendId = draft.settings?.backendId
         if (backendId) {
@@ -228,8 +262,19 @@ export const useResumeStore = defineStore('resume', {
             this.persistDrafts()
           }
         }
-      } catch {
+        this.syncStatus = 'synced'
+      } catch (error) {
+        this.syncStatus = 'error'
+        this.lastSyncError = error?.response?.data?.error || error?.message || 'Failed to sync draft'
         // 网络失败静默，本地数据已保存
+      } finally {
+        this.syncInFlight = false
+        if (this.queuedSyncDraft && !this.syncTimerId) {
+          this.syncTimerId = setTimeout(() => {
+            this.syncTimerId = null
+            this.flushBackendSync()
+          }, 300)
+        }
       }
     },
 

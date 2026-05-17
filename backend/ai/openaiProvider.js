@@ -3,8 +3,8 @@ const { AIProvider, AIProviderError, AIProviderConfigError, SYSTEM_PROMPT, build
 
 // Preset configs for known OpenAI-compatible providers
 const PROVIDER_PRESETS = {
-  openai:   { baseURL: undefined,                         defaultModel: 'gpt-4o' },
-  deepseek: { baseURL: 'https://api.deepseek.com/v1',    defaultModel: 'deepseek-v4-flash' },
+  openai: { baseURL: undefined, defaultModelEnv: 'OPENAI_MODEL' },
+  deepseek: { baseURL: 'https://api.deepseek.com/v1', defaultModelEnv: 'DEEPSEEK_MODEL' },
 }
 
 class OpenAICompatProvider extends AIProvider {
@@ -12,7 +12,10 @@ class OpenAICompatProvider extends AIProvider {
     super(config)
     if (!config.apiKey) throw new AIProviderConfigError(`${config.providerType} API key is required`, { provider: config.providerType })
     const preset = PROVIDER_PRESETS[config.providerType] || PROVIDER_PRESETS.openai
-    this._model = config.model || preset.defaultModel
+    this._model = config.model || process.env[preset.defaultModelEnv]
+    if (!this._model) {
+      throw new AIProviderConfigError(`${config.providerType} model is required. Fill the Model field or set ${preset.defaultModelEnv} on the backend.`, { provider: config.providerType })
+    }
     this._providerType = config.providerType || 'openai'
     this._client = new OpenAI({ apiKey: config.apiKey, baseURL: preset.baseURL })
   }

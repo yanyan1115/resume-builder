@@ -5,7 +5,8 @@ const { AIProviderConfigError } = require('../ai/base')
  * POST /api/ai/analyze
  * Body: { providerType, apiKey, model?, resumeText, jdText }
  *
- * Key is sent from the client's localStorage — never stored on the server.
+ * Key is read from the client's localStorage, sent through the local/self-hosted backend proxy for the request,
+ * and is not persisted in the project database or intentionally logged.
  */
 async function analyzeMatch(req, res) {
   const { providerType, apiKey, model, resumeText, jdText } = req.body

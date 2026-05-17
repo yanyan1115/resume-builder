@@ -5,6 +5,9 @@
         <div>
           <h2>Resume Editing</h2>
           <p>{{ resume.title }}</p>
+          <p v-if="syncStatusText" class="sync-status" :class="`sync-status-${resumeStore.syncStatus}`">
+            {{ syncStatusText }}
+          </p>
         </div>
         <router-link to="/drafts" class="drafts-link">Manage Drafts</router-link>
       </header>
@@ -389,6 +392,18 @@ export default {
 
     editableSections() {
       return [...(this.resume.sections || [])].sort((a, b) => a.order - b.order)
+    },
+
+    syncStatusText() {
+      if (!this.resumeStore.isLoggedIn()) return ''
+      if (this.resumeStore.syncStatus === 'syncing') return 'Syncing to backend...'
+      if (this.resumeStore.syncStatus === 'synced') return 'Synced to backend'
+      if (this.resumeStore.syncStatus === 'error') {
+        return this.resumeStore.lastSyncError
+          ? `Backend sync failed: ${this.resumeStore.lastSyncError}`
+          : 'Backend sync failed'
+      }
+      return ''
     },
 
     salaryRange: {
@@ -825,6 +840,24 @@ export default {
   margin: 0;
   color: #6b7280;
   font-size: 13px;
+}
+
+.editor-header .sync-status {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.sync-status-syncing {
+  color: #1d4ed8;
+}
+
+.sync-status-synced {
+  color: #047857;
+}
+
+.sync-status-error {
+  color: #b91c1c;
 }
 
 .drafts-link {

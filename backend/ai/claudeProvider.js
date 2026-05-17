@@ -1,13 +1,14 @@
 const Anthropic = require('@anthropic-ai/sdk')
 const { AIProvider, AIProviderError, AIProviderConfigError, SYSTEM_PROMPT, buildAnalyzePrompt, parseAnalyzeResponse } = require('./base')
 
-const DEFAULT_MODEL = 'claude-sonnet-4-6'
-
 class ClaudeProvider extends AIProvider {
   constructor(config) {
     super(config)
     if (!config.apiKey) throw new AIProviderConfigError('Anthropic API key is required', { provider: 'claude' })
-    this._model = config.model || DEFAULT_MODEL
+    this._model = config.model || process.env.ANTHROPIC_MODEL
+    if (!this._model) {
+      throw new AIProviderConfigError('Claude model is required. Fill the Model field or set ANTHROPIC_MODEL on the backend.', { provider: 'claude' })
+    }
     this._client = new Anthropic.Anthropic({ apiKey: config.apiKey })
   }
 
