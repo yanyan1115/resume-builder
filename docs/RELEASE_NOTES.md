@@ -93,3 +93,28 @@ Before tagging this release, run the checks in [RELEASE_CHECKLIST.md](RELEASE_CH
 - Added manual QA checklist.
 - Added sample resume reference.
 - Documented current release milestones and known risks.
+
+## Post-Beta (2026-05-17)
+
+### UI Polish
+
+- **HomePage**: Vanta wave color unified to `#1e3a5f`; glassmorphism card (backdrop-filter blur) on `#0d1b2a` background; 3-tier button layout (Start Editing / Choose Template / My Drafts); system-ui font with subtitle copy.
+- **Login / Register pages**: same glassmorphism visual language as HomePage; dark frosted-glass input fields; soft red error messages; loading spinner on login submit.
+- **FreshGradTemplate**: new third template — header-banner style with navy background, meta-bar row, left-label section layout; ATS-friendly single-column structure.
+- **App.vue / ResumeEditor.vue / TemplateSelection.vue**: sticky nav cleanup, neutral editor background, paper card preview shadow, thumbnail color sync.
+
+### Backend Draft Sync
+
+- Added `src/api/resumeApi.js` with list / get / create / update / remove wrappers over the existing Axios client.
+- Extended `resumeStore.js` with `syncDraftToBackend`, `loadFromBackend`, and `deleteDraftWithSync` actions.
+- `persistActiveDraft` now triggers async cloud sync after local save; `backendId` stored in `draft.settings` maps local UUID to MongoDB `_id`.
+- `App.vue` calls `loadFromBackend` on mount; remote wins on `updatedAt` conflict.
+- Fixed `resumeController.js` `updateResume` variable name collision (`const resume` redeclaration).
+- Unauthenticated users: zero behavior change.
+
+### Profile Photo Upload
+
+- Added `basics.photo` (base64 string) to canonical schema, `createDefaultResume`, and `normalizeCanonicalResume`.
+- Click-to-upload photo UI in Basic Information section of editor: FileReader → base64, Remove button, hidden file input (jpg / png / webp).
+- All three templates render the photo: Classic (80×80 rounded, top-right), Modern Two-Column (90×90 circular, sidebar center), Fresh Grad (80×80 rounded, header banner corner).
+- No server upload required; photo travels with draft data through localStorage and backend sync automatically.

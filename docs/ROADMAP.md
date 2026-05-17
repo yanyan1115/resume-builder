@@ -187,7 +187,7 @@ Exit criteria:
 
 ## Stage 6.5: Open-Source Showcase And QA Polish
 
-Status: First polish pass complete.
+Status: Complete.
 
 Implemented in the first pass:
 
@@ -206,6 +206,19 @@ Exit criteria:
 - A new visitor can understand the project status and run the core flow.
 - Core manual QA flows are documented.
 - Known warnings and remaining risks are visible rather than surprising.
+
+## Post-Beta Polish
+
+Status: Complete.
+
+Implemented after `v0.1.0-beta`:
+
+- **FreshGradTemplate**: new header-banner layout optimized for students and new graduates, ATS-friendly.
+- **UI unification**: App.vue sticky nav cleaned up; ResumeEditor neutral background and paper card shadow; TemplateSelection thumbnail colors synced.
+- **HomePage redesign**: Vanta waves synced to project primary color `#1e3a5f`; glassmorphism card with backdrop-filter blur; 3-tier button hierarchy; system-ui font and subtitle copy.
+- **Login / Register pages**: same glassmorphism style as HomePage, dark frosted-glass input fields, soft error messages, loading state on login button.
+- **Backend draft sync** (`src/api/resumeApi.js` + `resumeStore.js`): local-first cloud sync for logged-in users. `persistActiveDraft` triggers async POST/PUT to backend; `loadFromBackend` merges on app mount; `deleteDraftWithSync` propagates deletes. Unauthenticated users: zero behavior change. Fixed `resumeController.js` variable name collision bug.
+- **Profile photo upload**: `basics.photo` field added to canonical schema; click-to-upload UI in editor with FileReader → base64 conversion; all three templates render the photo (Classic: top-right rounded, Modern: circular sidebar, Fresh Grad: header banner corner).
 
 ## Stage 7: Optional AI Features
 

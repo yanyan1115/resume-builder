@@ -10,29 +10,34 @@ Resume Builder 是一个开源、可自托管的简历生成器，基于 Vue、P
 
 - 本地多简历草稿管理：新建、打开、复制、重命名、删除。
 - canonical resume schema：编辑器、预览、模板渲染、导出和后端持久化基础共享同一份数据结构。
-- 结构化编辑器：支持基础信息、求职意向、技能、工作经历、项目经历、教育经历、证书、奖项和组织经历。
-- 真实模板注册表，当前包含两种布局：
-  - Classic 单栏简历。
-  - Modern Two Column 双栏简历。
+- 结构化编辑器：支持基础信息（含头像上传）、求职意向、技能、工作经历、项目经历、教育经历、证书、奖项和组织经历。
+- 头像上传：图片转 base64 存入简历数据，无需服务器，三套模板均支持显示。
+- 真实模板注册表，当前包含三种布局：
+  - Classic 单栏简历（Georgian 衬线字体）。
+  - Modern Two Column 双栏简历（深蓝 sidebar）。
+  - Fresh Grad 应届生横幅简历（ATS 友好）。
 - 保留 light、dark、blue、purple、pink、red 等主题 CSS。
 - 基于当前 active draft 的实时预览。
 - 浏览器原生 `Print / Save as PDF`，导出的 PDF 文字更清晰、可选中。
 - 保留 legacy screenshot PDF、HTML、Word 导出作为次要路径。
-- Express/MongoDB 后端基础：认证、模板元数据、简历持久化和上传能力的雏形。
+- Express/MongoDB 后端：认证、简历 CRUD API 已完整实现。
+- **后端草稿同步**：登录用户的草稿自动同步到后端，local-first 策略，未登录用户零感知。
 
 ## 当前状态
 
-项目已经完成 Stage 0-6 的第一版实现：
+项目已经完成 Stage 0–6.5 的全部实现，并在 beta 之后完成了以下增强：
 
 - 文档和启动基础。
 - 稳定性清理。
 - 共享简历 schema。
-- 结构化编辑器。
-- 真实模板系统。
+- 结构化编辑器（含头像上传）。
+- 真实模板系统（3 套模板）。
 - 导出质量基线。
 - 本地草稿管理。
+- 开源展示和 QA polish。
+- **Post-beta**：登录/注册页面视觉统一、HomePage 美化、后端草稿同步（local-first）、头像上传功能。
 
-Stage 6.5 聚焦开源展示和 QA polish。后端草稿同步、更完整的模板贡献流程、可选 AI 功能仍是后续工作。
+可选 AI 功能（Stage 7）仍是后续工作。
 
 ## 截图
 
@@ -132,14 +137,14 @@ Web app 可以在不启动后端的情况下使用本地草稿模式。后端简
 
 ## 路线图摘要
 
-- Stage 6.5：开源展示和 QA polish。
+- Stage 0–6.5：✅ 全部完成。
+- Post-beta polish：✅ UI 视觉统一、后端草稿同步、头像上传。
 - Stage 7：可选 AI 功能，例如 JD 匹配、关键词建议和 bullet 优化。
-- Beta 发布准备：截图、演示素材、issue templates、首个 tag release。
-- 后端草稿同步：把本地草稿流程接入登录后的后端持久化。
 
 ## 已知限制
 
 - bundle size 仍然偏大，因为依赖中包含导出、3D 和实验性功能相关库。
+- 头像以 base64 存储，大图片会增加 localStorage / 后端体积，建议上传前压缩。
 - 上传模板预览还不是完整的模板贡献系统。
 - 推荐使用浏览器原生 print 作为 PDF 导出路径；legacy screenshot PDF 仍可用，但质量较低。
 - 本地移动端实验不包含在本次 beta release 中。
@@ -152,7 +157,7 @@ Web app 可以在不启动后端的情况下使用本地草稿模式。后端简
 
 ## 致谢
 
-这个 beta 版本由 Cora 规划和主导，OpenAI Codex 作为 AI coding collaborator 参与了文档、重构、QA 和发布准备。
+这个项目由 Cora 规划和主导。OpenAI Codex 作为 AI coding collaborator 参与了 beta 阶段的文档、重构、QA 和发布准备；Claude Code（Anthropic）参与了 post-beta 的 UI 美化、后端草稿同步和头像功能开发。
 
 ## License
 
@@ -169,30 +174,35 @@ The project is still in early beta, but it is ready for contributors to run loca
 ## Core Features
 
 - Local multi-resume draft management with create, open, duplicate, rename, and delete flows.
-- Canonical resume schema shared by editor, preview, template rendering, export, and backend persistence groundwork.
-- Structured editor for basics, job intention, skills, work experience, projects, education, certificates, awards, and organizations.
-- Real template registry with multiple layout components:
-  - Classic single-column resume.
-  - Modern Two Column resume.
+- Canonical resume schema shared by editor, preview, template rendering, export, and backend persistence.
+- Structured editor for basics (including profile photo), job intention, skills, work experience, projects, education, certificates, awards, and organizations.
+- Profile photo upload: image converted to base64 and stored in resume data — no server upload needed; all three templates render it.
+- Real template registry with three layout components:
+  - Classic single-column resume (Georgia serif).
+  - Modern Two Column resume (dark navy sidebar).
+  - Fresh Grad resume (header-banner style, ATS-friendly).
 - Theme support retained for existing light, dark, blue, purple, pink, and red CSS themes.
 - Live preview powered by the active canonical draft.
 - Browser-native `Print / Save as PDF` export for sharper, selectable text.
 - Legacy screenshot PDF, HTML, and Word export paths retained as secondary options.
-- Express/MongoDB backend foundation for auth, template metadata, resume persistence, and uploads.
+- Express/MongoDB backend with full resume CRUD API and JWT authentication.
+- **Backend draft sync**: logged-in users' drafts sync automatically — local-first, silent on network failure; unauthenticated users see zero behavior change.
 
 ## Current Status
 
-The project has completed first implementations for Stages 0-6:
+The project has completed Stages 0–6.5 and the following post-beta enhancements:
 
 - Documentation and setup baseline.
 - Stability cleanup.
 - Shared resume schema.
-- Structured editor redesign.
-- Real template system.
+- Structured editor redesign (with profile photo upload).
+- Real template system (3 templates).
 - Export quality baseline.
 - Local draft management.
+- Open-source showcase and QA polish.
+- **Post-beta**: Login/Register page visual unification, HomePage glassmorphism redesign, backend draft sync (local-first), and profile photo upload across all templates.
 
-Stage 6.5 focuses on open-source showcase and QA polish. Backend sync, richer template contribution workflows, and optional AI features are still future work.
+Optional AI features (Stage 7) remain future work.
 
 ## Screenshots
 
@@ -292,14 +302,14 @@ The web app works in local-only draft mode without the backend. Backend resume s
 
 ## Roadmap Summary
 
-- Stage 6.5: Open-source showcase and QA polish.
+- Stages 0–6.5: ✅ Complete.
+- Post-beta polish: ✅ UI unification, backend sync, profile photo.
 - Stage 7: Optional AI features such as job description matching, keyword suggestions, and bullet improvement.
-- Beta preparation: screenshots, demo materials, issue templates, and a tagged first release.
-- Backend draft sync: connect local draft workflows to authenticated backend persistence.
 
 ## Known Limitations
 
 - Bundle size is still high because the dependency list includes export, 3D, and experimental libraries.
+- Profile photos are stored as base64; large images increase localStorage and backend payload size — compress before uploading.
 - Uploaded template previews are not yet a full template contribution system.
 - Browser-native print is the recommended PDF path; legacy screenshot PDF remains available but is lower quality.
 - Local mobile experiments are not included in this beta release.
@@ -312,7 +322,7 @@ If mobile support returns later, it should start as a fresh plan around the stab
 
 ## Acknowledgements
 
-This beta was shaped and directed by Cora, with OpenAI Codex assisting as an AI coding collaborator during documentation, refactoring, QA, and release preparation.
+This project was shaped and directed by Cora. OpenAI Codex assisted as an AI coding collaborator during the beta phase (documentation, refactoring, QA, and release preparation). Claude Code (Anthropic) contributed to post-beta UI polish, backend draft sync, and profile photo upload.
 
 ## License
 
