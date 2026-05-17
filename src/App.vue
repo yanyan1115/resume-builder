@@ -16,8 +16,14 @@
           <router-link to="/editor">Editor</router-link>
           <router-link to="/preview">Preview</router-link>
           <router-link to="/templates">Templates</router-link>
-          <router-link to="/login">Login</router-link>
-          <router-link to="/register">Register</router-link>
+          <template v-if="isLoggedIn">
+            <span class="nav-username">{{ userName }}</span>
+            <button class="nav-logout" @click="logout">Sign out</button>
+          </template>
+          <template v-else>
+            <router-link to="/login">Login</router-link>
+            <router-link to="/register">Register</router-link>
+          </template>
         </div>
       </div>
     </nav>
@@ -35,16 +41,43 @@ export default {
   name: 'App',
   data() {
     return {
-      menuOpen: false
+      menuOpen: false,
+      // reactive token flag — updated by login/logout
+      _tokenFlag: !!localStorage.getItem('token')
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this._tokenFlag
+    },
+    userName() {
+      return localStorage.getItem('user_name') || 'Account'
     }
   },
   mounted() {
     const store = useResumeStore()
     store.loadFromBackend()
+    // keep nav in sync when other tabs log in/out
+    window.addEventListener('storage', this._onStorage)
+  },
+  beforeUnmount() {
+    window.removeEventListener('storage', this._onStorage)
   },
   methods: {
     toggleMenu() {
       this.menuOpen = !this.menuOpen
+    },
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user_name')
+      this._tokenFlag = false
+      this.menuOpen = false
+      this.$router.push('/')
+    },
+    _onStorage(e) {
+      if (e.key === 'token') {
+        this._tokenFlag = !!e.newValue
+      }
     }
   }
 }
@@ -111,6 +144,33 @@ export default {
 .nav-links a.router-link-exact-active {
   background: #eff6ff;
   color: #1d4ed8;
+}
+
+.nav-username {
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.nav-logout {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-logout:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
 /* ── Burger (mobile) ── */

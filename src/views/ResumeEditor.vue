@@ -427,14 +427,23 @@ export default {
     handlePhotoUpload(event) {
       const file = event.target.files[0]
       if (!file) return
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        this.resume.basics.photo = e.target.result
+      event.target.value = ''
+
+      const img = new Image()
+      const url = URL.createObjectURL(file)
+      img.onload = () => {
+        URL.revokeObjectURL(url)
+        // compress: max 300×300, quality 0.82
+        const MAX = 300
+        const scale = Math.min(1, MAX / Math.max(img.width, img.height))
+        const canvas = document.createElement('canvas')
+        canvas.width = Math.round(img.width * scale)
+        canvas.height = Math.round(img.height * scale)
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+        this.resume.basics.photo = canvas.toDataURL('image/jpeg', 0.82)
         this.persistDraft()
       }
-      reader.readAsDataURL(file)
-      // reset so same file can be re-selected
-      event.target.value = ''
+      img.src = url
     },
 
     removePhoto() {

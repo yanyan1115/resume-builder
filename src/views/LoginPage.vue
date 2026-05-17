@@ -65,6 +65,7 @@ export default {
           password: this.password,
         })
         localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user_name', response.data.name || '')
         this.$router.push('/')
       } catch (error) {
         this.errorMessage = error.response?.data?.message || 'Login failed. Please try again.'

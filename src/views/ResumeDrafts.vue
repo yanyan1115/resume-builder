@@ -5,8 +5,12 @@
         <h2>Resume Drafts</h2>
         <p>Manage local resumes stored in this browser.</p>
       </div>
-      <el-button type="primary" @click="createDraft">New Draft</el-button>
+      <div class="header-actions">
+        <el-button @click="importDraft">Import JSON</el-button>
+        <el-button type="primary" @click="createDraft">New Draft</el-button>
+      </div>
     </header>
+    <input ref="jsonInput" type="file" accept="application/json" style="display:none" @change="handleImport" />
 
     <section class="draft-grid">
       <article
@@ -42,6 +46,7 @@
         <div class="draft-actions">
           <el-button @click="openDraft(draft.id)">Open</el-button>
           <el-button @click="duplicateDraft(draft.id)">Duplicate</el-button>
+          <el-button @click="exportDraft(draft)">Export</el-button>
           <el-button type="danger" plain @click="deleteDraft(draft.id)">Delete</el-button>
         </div>
       </article>
@@ -59,6 +64,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { useResumeStore } from '@/stores/resumeStore'
+import { normalizeCanonicalResume } from '@/schemas/resumeSchema'
 
 export default defineComponent({
   name: 'ResumeDrafts',
@@ -101,6 +107,46 @@ export default defineComponent({
       this.resumeStore.deleteDraftWithSync(draftId)
     },
 
+    exportDraft(draft) {
+      const filename = `${draft.title || 'resume'}.json`.replace(/[/\\:*?"<>|]/g, '-')
+      const blob = new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      a.click()
+      URL.revokeObjectURL(url)
+    },
+
+    importDraft() {
+      this.$refs.jsonInput.value = ''
+      this.$refs.jsonInput.click()
+    },
+
+    handleImport(event) {
+      const file = event.target.files[0]
+      if (!file) return
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        try {
+          const raw = JSON.parse(e.target.result)
+          // normalize and give a fresh id to avoid collision
+          const imported = normalizeCanonicalResume({
+            ...raw,
+            id: `local-resume-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            title: raw.title ? `${raw.title} (imported)` : 'Imported Resume',
+          })
+          this.resumeStore.drafts.push(imported)
+          this.resumeStore.persistDrafts()
+          this.resumeStore.openDraft(imported.id)
+          this.$router.push({ name: 'ResumeEditor' })
+        } catch {
+          alert('Invalid JSON file. Please select a resume exported from this app.')
+        }
+      }
+      reader.readAsText(file)
+    },
+
     formatDate(value) {
       if (!value) return 'Unknown'
       return new Intl.DateTimeFormat('en', {
@@ -139,6 +185,13 @@ export default defineComponent({
 .drafts-header p {
   margin: 6px 0 0;
   color: #667085;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .draft-grid {
