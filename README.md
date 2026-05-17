@@ -22,6 +22,7 @@ Resume Builder 是一个开源、可自托管的简历生成器，基于 Vue、P
 - 保留 legacy screenshot PDF、HTML、Word 导出作为次要路径。
 - Express/MongoDB 后端：认证、简历 CRUD API 已完整实现。
 - **后端草稿同步**：登录用户的草稿自动同步到后端，local-first 策略，未登录用户零感知。
+- **AI JD 匹配分析**：粘贴招聘 JD，AI 自动打分（0–100）并列出命中/缺失关键词和改进建议。支持 Claude、OpenAI、DeepSeek，API key 仅存浏览器本地，不经过服务器。
 
 ## 当前状态
 
@@ -36,8 +37,7 @@ Resume Builder 是一个开源、可自托管的简历生成器，基于 Vue、P
 - 本地草稿管理。
 - 开源展示和 QA polish。
 - **Post-beta**：登录/注册页面视觉统一、HomePage 美化、后端草稿同步（local-first）、头像上传功能。
-
-可选 AI 功能（Stage 7）仍是后续工作。
+- **Stage 7**：AI JD 匹配分析，支持 Claude / OpenAI / DeepSeek，key 存浏览器本地。
 
 ## 截图
 
@@ -121,6 +121,34 @@ npm start
 
 Web app 可以在不启动后端的情况下使用本地草稿模式。后端简历同步是后续增强项。
 
+## AI 功能使用说明
+
+Resume Builder 内置 AI JD 匹配分析，帮助你判断简历与招聘岗位的契合度。
+
+### 支持的 AI Provider
+
+| Provider | 默认模型 | 获取 Key |
+|----------|----------|----------|
+| Claude (Anthropic) | `claude-sonnet-4-6` | [console.anthropic.com](https://console.anthropic.com) |
+| OpenAI | `gpt-4o` | [platform.openai.com](https://platform.openai.com/api-keys) |
+| DeepSeek | `deepseek-v4-flash` | [platform.deepseek.com](https://platform.deepseek.com) |
+
+### 使用步骤
+
+1. 打开简历编辑器（`/editor`），滚动到页面底部，展开 **AI Job Match Analysis** 折叠面板。
+2. 点击 **Configure AI**，选择 Provider 并填入你的 API Key（可选填 Model 覆盖默认值）。
+3. 点击 **Save** 保存配置。
+4. 将目标岗位的招聘 JD 粘贴到文本框，点击 **Analyze Match**。
+5. 查看匹配结果：
+   - **分数**（0–100）及匹配等级。
+   - **✅ Matched Keywords**：简历和 JD 共同命中的关键词。
+   - **⚠️ Missing Keywords**：JD 中存在但简历中缺失的关键词。
+   - **💡 Advice**：最有价值的一条改进建议。
+
+### 隐私说明
+
+API Key **仅存储在你的浏览器 localStorage 中**，不会发送或保存到本项目服务器。每次分析时 Key 随请求发送给对应 AI 服务商，之后立即丢弃。
+
 ## 文档
 
 - [产品需求](docs/PRD.md)
@@ -139,7 +167,7 @@ Web app 可以在不启动后端的情况下使用本地草稿模式。后端简
 
 - Stage 0–6.5：✅ 全部完成。
 - Post-beta polish：✅ UI 视觉统一、后端草稿同步、头像上传。
-- Stage 7：可选 AI 功能，例如 JD 匹配、关键词建议和 bullet 优化。
+- Stage 7：✅ AI JD 匹配分析（Claude / OpenAI / DeepSeek）。
 
 ## 已知限制
 
@@ -187,6 +215,7 @@ The project is still in early beta, but it is ready for contributors to run loca
 - Legacy screenshot PDF, HTML, and Word export paths retained as secondary options.
 - Express/MongoDB backend with full resume CRUD API and JWT authentication.
 - **Backend draft sync**: logged-in users' drafts sync automatically — local-first, silent on network failure; unauthenticated users see zero behavior change.
+- **AI JD match analysis**: paste a job description and get an instant match score (0–100), matched/missing keywords, and improvement advice. Supports Claude, OpenAI, and DeepSeek — API key stored in browser localStorage only, never on the server.
 
 ## Current Status
 
@@ -201,8 +230,7 @@ The project has completed Stages 0–6.5 and the following post-beta enhancement
 - Local draft management.
 - Open-source showcase and QA polish.
 - **Post-beta**: Login/Register page visual unification, HomePage glassmorphism redesign, backend draft sync (local-first), and profile photo upload across all templates.
-
-Optional AI features (Stage 7) remain future work.
+- **Stage 7**: AI JD match analysis with multi-provider support (Claude / OpenAI / DeepSeek); API key stored in browser localStorage only.
 
 ## Screenshots
 
@@ -286,6 +314,34 @@ npm start
 
 The web app works in local-only draft mode without the backend. Backend resume synchronization is planned as a later enhancement.
 
+## AI Features
+
+Resume Builder includes an AI-powered job description (JD) match analysis to help you understand how well your resume fits a role.
+
+### Supported Providers
+
+| Provider | Default Model | Get API Key |
+|----------|---------------|-------------|
+| Claude (Anthropic) | `claude-sonnet-4-6` | [console.anthropic.com](https://console.anthropic.com) |
+| OpenAI | `gpt-4o` | [platform.openai.com](https://platform.openai.com/api-keys) |
+| DeepSeek | `deepseek-v4-flash` | [platform.deepseek.com](https://platform.deepseek.com) |
+
+### How to Use
+
+1. Open the resume editor (`/editor`) and scroll to the bottom. Expand the **AI Job Match Analysis** panel.
+2. Click **Configure AI**, choose a provider, and enter your API key (optionally override the default model).
+3. Click **Save**.
+4. Paste the target job description into the text box and click **Analyze Match**.
+5. Review your results:
+   - **Score** (0–100) with a match level label.
+   - **✅ Matched Keywords** — skills found in both your resume and the JD.
+   - **⚠️ Missing Keywords** — important JD terms not found in your resume.
+   - **💡 Advice** — the single most impactful improvement suggestion.
+
+### Privacy
+
+Your API key is stored **only in your browser's localStorage** and is never persisted on this project's server. It is forwarded to the AI provider per request and immediately discarded.
+
 ## Documentation
 
 - [Product Requirements](docs/PRD.md)
@@ -304,7 +360,7 @@ The web app works in local-only draft mode without the backend. Backend resume s
 
 - Stages 0–6.5: ✅ Complete.
 - Post-beta polish: ✅ UI unification, backend sync, profile photo.
-- Stage 7: Optional AI features such as job description matching, keyword suggestions, and bullet improvement.
+- Stage 7: ✅ AI JD match analysis (Claude / OpenAI / DeepSeek).
 
 ## Known Limitations
 
