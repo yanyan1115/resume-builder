@@ -1,205 +1,222 @@
 <template>
-    <div class="register-page-container">
-      <div class="vanta-background" ref="vantaRef"></div> <!-- 动态背景 -->
-      <div class="register-card">
-        <h2>Register</h2>
-        <form @submit.prevent="registerUser">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" v-model="name" id="name" placeholder="Please enter your name..." required />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" v-model="email" id="email" placeholder="Please enter your email..." required />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" v-model="password" id="password" placeholder="Please enter your password..." required />
-          </div>
-          <button type="submit" :disabled="loading">Register</button>
-        </form>
-        <p>Already have an account? → <router-link to="/login">Login</router-link></p>
+  <div class="page-container">
+    <div ref="vantaRef" class="vanta-background"></div>
+    <div class="glass-card">
+      <h2 class="card-title">Create account</h2>
+      <p class="card-subtitle">Save and sync your resumes across devices.</p>
+      <form @submit.prevent="registerUser">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" v-model="name" id="name" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" v-model="email" id="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" v-model="password" id="password" placeholder="••••••••" required />
+        </div>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-      </div>
+        <button type="submit" :disabled="loading" class="btn-primary">
+          {{ loading ? 'Creating account…' : 'Create account' }}
+        </button>
+      </form>
+      <p class="alt-link">Already have an account? <router-link to="/login">Sign in</router-link></p>
     </div>
-  </template>
-  
-  <script>
-  import apiClient from '@/api/client';
-  import * as THREE from "three";
-  import WAVES from "vanta/dist/vanta.waves.min";  // 只导入 WAVES
-  
-  export default {
-    name: 'RegisterPage',
-    data() {
-      return {
-        name: '',
-        email: '',
-        password: '',
-        loading: false,
-        errorMessage: ''
-      };
-    },
-    mounted() {
-      this.vantaEffect = WAVES({
-        el: this.$refs.vantaRef,
-        THREE: THREE,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.0,
-        minWidth: 200.0,
-        scale: 1.0,
-        scaleMobile: 1.0,
-        color: 0x5f88,
-        shininess: 76.0,
-        waveHeight: 12.0,
-        waveSpeed: 0.95,
-        zoom: 0.89,
-      });
-    },
-    beforeUnmount() {  // 使用 beforeUnmount 替代 beforeDestroy
-      if (this.vantaEffect) {
-        this.vantaEffect.destroy();
+  </div>
+</template>
+
+<script>
+import apiClient from '@/api/client'
+import * as THREE from 'three'
+import WAVES from 'vanta/dist/vanta.waves.min'
+
+export default {
+  name: 'RegisterPage',
+  data() {
+    return { name: '', email: '', password: '', loading: false, errorMessage: '' }
+  },
+  mounted() {
+    this.vantaEffect = WAVES({
+      el: this.$refs.vantaRef,
+      THREE,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      scale: 1.0,
+      scaleMobile: 1.0,
+      color: 0x1e3a5f,
+      shininess: 60.0,
+      waveHeight: 14.0,
+      waveSpeed: 0.85,
+      zoom: 0.88,
+    })
+  },
+  beforeUnmount() {
+    if (this.vantaEffect) this.vantaEffect.destroy()
+  },
+  methods: {
+    async registerUser() {
+      this.loading = true
+      this.errorMessage = ''
+      try {
+        const response = await apiClient.post('/users/register', {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+        })
+        localStorage.setItem('token', response.data.token)
+        this.$router.push('/')
+      } catch (error) {
+        this.errorMessage = error.response?.data?.message || 'Registration failed. Please try again.'
+      } finally {
+        this.loading = false
       }
     },
-    methods: {
-      async registerUser() {
-        this.loading = true;
-        try {
-          const response = await apiClient.post('/users/register', {
-            name: this.name,
-            email: this.email,
-            password: this.password
-          });
-          // 注册成功后存储 token 并跳转到登录页面
-          localStorage.setItem('token', response.data.token);
-          this.$router.push('/login');  // 跳转到登录页面
-        } catch (error) {
-          this.errorMessage = error.response.data.message;
-        } finally {
-          this.loading = false;
-        }
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  /* 全局基础字体 */
-  .register-page-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #fdfcfb, #e2ebf0);
-    padding: 20px;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  /* 动态背景 */
-  .vanta-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* 让背景在最下层 */
-  }
-  
-  /* 注册卡片 */
-  .register-card {
-    background: #ffffff;
-    padding: 48px 36px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    width: 100%;
-    max-width: 420px;
-    animation: fadeIn 1s ease;
-    position: relative;
-    z-index: 1; /* 确保卡片在动态背景之上 */
-  }
-  
-  /* 标题 */
-  h2 {
-    font-size: 34px;
-    color: #444;
-    font-weight: 600;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-    font-family: "Microsoft JhengHei Light", sans-serif;
-  }
-  
-  /* 输入框样式 */
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-  }
-  
-  input:focus {
-    border-color: #4CAF50;
-    outline: none;
-    background-color: #f1f8e9;
-  }
-  
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 1rem;
-    font-size: 14px;
-  }
-  
-  .register-link {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  .register-link a {
-    color: #4CAF50;
-    text-decoration: none;
-  }
-  
-  .register-link a:hover {
-    text-decoration: underline;
-  }
-  
-  /* 入场动画 */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  </style>
-  
+  },
+}
+</script>
+
+<style scoped>
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: #0d1b2a;
+}
+
+.vanta-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.glass-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 48px 44px 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  max-width: 420px;
+  animation: fadeUp 0.7s ease both;
+}
+
+.card-title {
+  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+
+.card-subtitle {
+  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 28px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 11px 13px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  background: #1e3a5f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(30, 58, 95, 0.5);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #25487a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(30, 58, 95, 0.6);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #fca5a5;
+  font-size: 0.85rem;
+  margin: 0 0 12px;
+  text-align: left;
+}
+
+.alt-link {
+  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  margin-top: 20px;
+}
+
+.alt-link a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.alt-link a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
