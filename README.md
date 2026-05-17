@@ -157,7 +157,7 @@ Web app 可以在不启动后端的情况下使用本地草稿模式。后端简
 
 ## 致谢
 
-这个项目由 Cora 规划和主导。OpenAI Codex 作为 AI coding collaborator 参与了 beta 阶段的文档、重构、QA 和发布准备；Claude Code（Anthropic）参与了 post-beta 的 UI 美化、后端草稿同步和头像功能开发。
+这个项目由 Cora 规划和主导。OpenAI Codex 作为 AI coding collaborator 参与了 beta 阶段的文档、重构、QA 和发布准备；**Claude Code（小克，Anthropic Sonnet 4.6）** 参与了 post-beta 的 UI 美化、后端草稿同步、头像上传、退出登录、JSON 导入导出等功能开发，以及相关文档更新。
 
 ## License
 
@@ -322,7 +322,7 @@ If mobile support returns later, it should start as a fresh plan around the stab
 
 ## Acknowledgements
 
-This project was shaped and directed by Cora. OpenAI Codex assisted as an AI coding collaborator during the beta phase (documentation, refactoring, QA, and release preparation). Claude Code (Anthropic) contributed to post-beta UI polish, backend draft sync, and profile photo upload.
+This project was shaped and directed by Cora. OpenAI Codex assisted as an AI coding collaborator during the beta phase (documentation, refactoring, QA, and release preparation). **Claude Code ("小克", Anthropic Sonnet 4.6)** contributed to post-beta development: UI unification, backend draft sync, profile photo upload, auth state + logout, and JSON import/export.
 
 ## License
 
