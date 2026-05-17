@@ -286,6 +286,8 @@
           <el-button @click="exportResume" type="primary" class="w-full">Save and Export</el-button>
         </section>
       </el-form>
+
+      <AiAssistant :resume="resume" class="ai-assistant-wrap" />
     </section>
 
     <a href="#" ref="downloadLink" style="display: none;">Download HTML</a>
@@ -304,6 +306,7 @@ import html2canvas from 'html2canvas'
 import { saveAs } from 'file-saver'
 import { asBlob } from 'html-docx-js-typescript'
 import ResumeTemplate from '../components/template.vue'
+import AiAssistant from '../components/AiAssistant.vue'
 import { createDefaultResume, normalizeCanonicalResume } from '@/schemas/resumeSchema'
 import { useResumeStore } from '@/stores/resumeStore'
 import { templateRegistry } from '@/templates/registry'
@@ -314,7 +317,8 @@ export default {
   name: 'ResumeEditor',
 
   components: {
-    ResumeTemplate
+    ResumeTemplate,
+    AiAssistant
   },
 
   setup() {
@@ -943,6 +947,10 @@ export default {
 .items-editor {
   display: grid;
   gap: 10px;
+}
+
+.ai-assistant-wrap {
+  margin: 8px 16px 24px;
 }
 
 .w-full {

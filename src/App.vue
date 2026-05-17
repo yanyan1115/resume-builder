@@ -43,12 +43,12 @@ export default {
     return {
       menuOpen: false,
       // reactive token flag — updated by login/logout
-      _tokenFlag: !!localStorage.getItem('token')
+      tokenFlag: !!localStorage.getItem('token')
     }
   },
   computed: {
     isLoggedIn() {
-      return this._tokenFlag
+      return this.tokenFlag
     },
     userName() {
       return localStorage.getItem('user_name') || 'Account'
@@ -58,10 +58,10 @@ export default {
     const store = useResumeStore()
     store.loadFromBackend()
     // keep nav in sync when other tabs log in/out
-    window.addEventListener('storage', this._onStorage)
+    window.addEventListener('storage', this.onStorage)
   },
   beforeUnmount() {
-    window.removeEventListener('storage', this._onStorage)
+    window.removeEventListener('storage', this.onStorage)
   },
   methods: {
     toggleMenu() {
@@ -70,13 +70,13 @@ export default {
     logout() {
       localStorage.removeItem('token')
       localStorage.removeItem('user_name')
-      this._tokenFlag = false
+      this.tokenFlag = false
       this.menuOpen = false
       this.$router.push('/')
     },
-    _onStorage(e) {
+    onStorage(e) {
       if (e.key === 'token') {
-        this._tokenFlag = !!e.newValue
+        this.tokenFlag = !!e.newValue
       }
     }
   }

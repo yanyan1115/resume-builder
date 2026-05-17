@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes'); // 引入用户路由
 const resumeRoutes = require('./routes/resumeRoutes'); // 引入简历路由
 const templateRoutes = require('./routes/templateRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 dotenv.config();  // 加载 .env 配置
 
@@ -50,6 +51,9 @@ app.use('/api/resumes', resumeRoutes);  // 简历相关 API 路由
 
 // 模版 API 路由
 app.use('/api/templates', templateRoutes);// 模版相关 API 路由
+
+// AI 分析路由（key 由客户端携带，不存服务器）
+app.use('/api/ai', aiRoutes);
 
 // 服务器监听端口
 const PORT = process.env.PORT || 5000;
