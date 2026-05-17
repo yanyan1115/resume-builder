@@ -148,8 +148,8 @@ import { getAiConfig, saveAiConfig, clearAiConfig, hasAiConfig, analyzeMatch } f
 
 const PROVIDER_DEFAULTS = {
   claude:   { key: 'sk-ant-…',          model: 'claude-sonnet-4-6' },
-  openai:   { key: 'sk-…',              model: 'gpt-4o-mini' },
-  deepseek: { key: 'sk-…',              model: 'deepseek-chat' },
+  openai:   { key: 'sk-…',              model: 'gpt-4o' },
+  deepseek: { key: 'sk-…',              model: 'deepseek-v4-flash' },
 }
 
 export default {

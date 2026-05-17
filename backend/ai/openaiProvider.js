@@ -3,8 +3,8 @@ const { AIProvider, AIProviderError, AIProviderConfigError, SYSTEM_PROMPT, build
 
 // Preset configs for known OpenAI-compatible providers
 const PROVIDER_PRESETS = {
-  openai:   { baseURL: undefined,                         defaultModel: 'gpt-4o-mini' },
-  deepseek: { baseURL: 'https://api.deepseek.com/v1',    defaultModel: 'deepseek-chat' },
+  openai:   { baseURL: undefined,                         defaultModel: 'gpt-4o' },
+  deepseek: { baseURL: 'https://api.deepseek.com/v1',    defaultModel: 'deepseek-v4-flash' },
 }
 
 class OpenAICompatProvider extends AIProvider {
