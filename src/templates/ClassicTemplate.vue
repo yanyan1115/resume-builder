@@ -233,7 +233,7 @@ export default defineComponent({
 <style scoped>
 .classic-resume {
   width: 100%;
-  min-height: 100%;
+  min-height: 842px;
   padding: 40px 48px;
   background: #ffffff;
   color: #1a1a1a;

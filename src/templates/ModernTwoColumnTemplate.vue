@@ -233,7 +233,7 @@ export default defineComponent({
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   width: 100%;
-  min-height: 100%;
+  min-height: 842px;
   background: #ffffff;
   color: #1f2937;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
@@ -247,6 +247,7 @@ export default defineComponent({
   background: #1e3a5f;
   color: #e8edf3;
   overflow: hidden;
+  min-height: 842px;
 }
 
 .identity-block {

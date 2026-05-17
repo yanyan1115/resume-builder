@@ -267,7 +267,9 @@
     <a href="#" ref="downloadLink" style="display: none;">Download HTML</a>
 
     <aside class="preview-panel">
-      <ResumeTemplate ref="resumeTemplate" :resume="resume" :theme="resume.themeId" />
+      <div class="preview-card">
+        <ResumeTemplate ref="resumeTemplate" :resume="resume" :theme="resume.themeId" />
+      </div>
     </aside>
   </div>
 </template>
@@ -741,12 +743,12 @@ export default {
   align-items: center;
 }
 
-/* give the preview template a paper-like card */
-.preview-panel > :deep(*) {
+.preview-card {
   width: 100%;
-  max-width: 780px;
+  max-width: 860px;
   background: #ffffff;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+  align-self: flex-start;
 }
 
 .editor-header {
