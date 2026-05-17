@@ -2,6 +2,7 @@
   <article id="resumeContent" class="modern-resume" :class="themeClass">
     <aside class="modern-sidebar">
       <div class="identity-block">
+        <img v-if="basics.photo" :src="basics.photo" alt="Profile photo" class="sidebar-photo" />
         <h1>{{ basics.name || 'Your Name' }}</h1>
         <p class="headline">{{ basics.headline || intention.jobTitle || '' }}</p>
       </div>
@@ -254,6 +255,17 @@ export default defineComponent({
   padding-bottom: 20px;
   margin-bottom: 4px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.sidebar-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  display: block;
+  margin: 0 auto 12px;
 }
 
 .identity-block h1 {

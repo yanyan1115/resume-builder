@@ -122,6 +122,7 @@ export const createDefaultResume = (overrides = {}) => {
     basics: {
       name: '',
       headline: '',
+      photo: '',
       gender: '',
       age: null,
       birthDate: {
@@ -206,6 +207,7 @@ export const normalizeCanonicalResume = (resume = {}) => {
     basics: {
       name: '',
       headline: '',
+      photo: '',
       gender: '',
       age: null,
       birthDate: {
@@ -263,6 +265,7 @@ export const normalizeCanonicalResume = (resume = {}) => {
     basics: {
       ...defaults.basics,
       ...(resume.basics || {}),
+      photo: asString(resume.basics?.photo),
       age: asNullableNumber(resume.basics?.age),
       birthDate: {
         ...defaults.basics.birthDate,

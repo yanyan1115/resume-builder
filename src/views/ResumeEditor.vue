@@ -41,6 +41,30 @@
 
         <section class="form-section">
           <h3>Basic Information</h3>
+
+          <el-form-item label="Profile Photo">
+            <div class="photo-uploader">
+              <div class="photo-preview" @click="$refs.photoInput.click()">
+                <img v-if="resume.basics.photo" :src="resume.basics.photo" alt="Profile photo" />
+                <div v-else class="photo-placeholder">
+                  <span>Click to upload</span>
+                </div>
+              </div>
+              <div class="photo-actions">
+                <el-button size="small" @click="$refs.photoInput.click()">Upload Photo</el-button>
+                <el-button size="small" type="danger" plain v-if="resume.basics.photo" @click="removePhoto">Remove</el-button>
+                <p class="field-note">JPG / PNG, recommended 1:1 ratio</p>
+              </div>
+            </div>
+            <input
+              ref="photoInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              style="display:none"
+              @change="handlePhotoUpload"
+            />
+          </el-form-item>
+
           <el-form-item label="Name">
             <el-input v-model="resume.basics.name" placeholder="Please enter your name..." @change="persistDraft" />
           </el-form-item>
@@ -398,6 +422,24 @@ export default {
   methods: {
     persistDraft() {
       this.resumeStore.setActiveResume(normalizeCanonicalResume(this.resume))
+    },
+
+    handlePhotoUpload(event) {
+      const file = event.target.files[0]
+      if (!file) return
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        this.resume.basics.photo = e.target.result
+        this.persistDraft()
+      }
+      reader.readAsDataURL(file)
+      // reset so same file can be re-selected
+      event.target.value = ''
+    },
+
+    removePhoto() {
+      this.resume.basics.photo = ''
+      this.persistDraft()
     },
 
     renameActiveDraft() {
@@ -810,6 +852,52 @@ export default {
   margin: 4px 0 0;
   color: #6b7280;
   font-size: 12px;
+}
+
+.photo-uploader {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.photo-preview {
+  width: 88px;
+  height: 88px;
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+}
+
+.photo-preview:hover {
+  border-color: #1d4ed8;
+}
+
+.photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-placeholder {
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+  padding: 8px;
+  line-height: 1.4;
+}
+
+.photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
 }
 
 .salary-row,

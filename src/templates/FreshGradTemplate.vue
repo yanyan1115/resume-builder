@@ -1,18 +1,21 @@
 <template>
   <div id="resumeContent" class="fresh-resume" :class="themeClass">
     <header class="fresh-header">
-      <div class="header-main">
-        <h1>{{ basics.name || 'Your Name' }}</h1>
-        <p v-if="basics.headline || intention.jobTitle" class="header-title">
-          {{ basics.headline || intention.jobTitle }}
-        </p>
+      <div class="header-left">
+        <div class="header-main">
+          <h1>{{ basics.name || 'Your Name' }}</h1>
+          <p v-if="basics.headline || intention.jobTitle" class="header-title">
+            {{ basics.headline || intention.jobTitle }}
+          </p>
+        </div>
+        <div class="header-contact">
+          <span v-if="basics.email">{{ basics.email }}</span>
+          <span v-if="basics.phone">{{ basics.phone }}</span>
+          <span v-if="basics.location">{{ basics.location }}</span>
+          <span v-if="desiredCity">{{ desiredCity }}</span>
+        </div>
       </div>
-      <div class="header-contact">
-        <span v-if="basics.email">{{ basics.email }}</span>
-        <span v-if="basics.phone">{{ basics.phone }}</span>
-        <span v-if="basics.location">{{ basics.location }}</span>
-        <span v-if="desiredCity">{{ desiredCity }}</span>
-      </div>
+      <img v-if="basics.photo" :src="basics.photo" alt="Profile photo" class="header-photo" />
     </header>
 
     <div class="meta-bar" v-if="hasMetaRow">
@@ -244,6 +247,20 @@ export default defineComponent({
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.header-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .header-main h1 {

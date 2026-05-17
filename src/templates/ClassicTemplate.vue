@@ -1,16 +1,19 @@
 <template>
   <div id="resumeContent" class="classic-resume" :class="themeClass">
     <header class="resume-header">
-      <h1>{{ basics.name || 'Your Name' }}</h1>
-      <p v-if="basics.headline || intention.jobTitle" class="resume-headline">
-        {{ basics.headline || intention.jobTitle }}
-      </p>
-      <div class="contact-line">
-        <span v-if="basics.email">{{ basics.email }}</span>
-        <span v-if="basics.phone">{{ basics.phone }}</span>
-        <span v-if="basics.location">{{ basics.location }}</span>
-        <span v-if="desiredCity">{{ desiredCity }}</span>
+      <div class="header-text">
+        <h1>{{ basics.name || 'Your Name' }}</h1>
+        <p v-if="basics.headline || intention.jobTitle" class="resume-headline">
+          {{ basics.headline || intention.jobTitle }}
+        </p>
+        <div class="contact-line">
+          <span v-if="basics.email">{{ basics.email }}</span>
+          <span v-if="basics.phone">{{ basics.phone }}</span>
+          <span v-if="basics.location">{{ basics.location }}</span>
+          <span v-if="desiredCity">{{ desiredCity }}</span>
+        </div>
       </div>
+      <img v-if="basics.photo" :src="basics.photo" alt="Profile photo" class="header-photo" />
     </header>
 
     <div class="basics-grid" v-if="hasBasicsRow">
@@ -245,10 +248,27 @@ export default defineComponent({
 
 /* ── Header ── */
 .resume-header {
-  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   padding-bottom: 18px;
   margin-bottom: 14px;
   border-bottom: 2px solid #1a1a1a;
+}
+
+.header-text {
+  flex: 1;
+  text-align: center;
+}
+
+.header-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #e5e7eb;
 }
 
 .resume-header h1 {
