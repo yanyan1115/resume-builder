@@ -1,0 +1,26 @@
+@use 'sass:color';
+
+// 颜色变量
+$primary-green: #4CAF50;
+$primary-blue: #2196F3;
+$soft-mint: #E0F7FA;
+$soft-lime: #F1F8E9;
+$primary-text: #333333;
+$secondary-text: #666666;
+$light-text: #FFFFFF;
+
+// 边距和间距变量
+$base-padding: 20px;
+$card-padding: 40px 30px;
+$button-radius: 12px;
+$card-radius: 16px;
+
+// 阴影变量
+$button-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+$button-shadow-hover: 0 6px 14px rgba(76, 175, 80, 0.4);
+$card-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+// 渐变色
+$gradient-soft-mint-to-lime: linear-gradient(90deg, $soft-mint, $soft-lime);
+$gradient-primary-green: linear-gradient(90deg, $primary-green, color.adjust($primary-green, $lightness: 10%));
+$gradient-primary-blue: linear-gradient(90deg, $primary-blue, color.adjust($primary-blue, $lightness: 10%));

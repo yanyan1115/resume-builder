@@ -1,0 +1,113 @@
+.theme-dark {
+  // 主文字颜色
+  .text-primary-text {
+    color: #f0f0f0; // 浅色字体，适配深色背景
+  }
+
+  // 简历模板背景样式
+  .resume-template {
+    background-image: linear-gradient(to right, #434343 0%, black 100%);
+    background-color: #1e1e2f;
+    color: #f0f0f0;
+    padding: 32px;
+    border-radius: 16px;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  // 标题样式
+  .resume-template h1 {
+    font-size: 28px;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #444a6d;
+    padding-bottom: 6px;
+  }
+
+  .resume-template h2 {
+    font-size: 22px;
+    color: #d0d4f5;
+    margin: 20px 0 10px;
+    font-weight: 600;
+  }
+
+  .resume-template h3 {
+    font-size: 18px;
+    color: #c0c4e4;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  // 分隔线
+  .resume-template hr {
+    border: none;
+    border-top: 1px solid #3a3f5a;
+    margin: 24px 0;
+  }
+
+  // 列表样式
+  .resume-template ul {
+    padding-left: 20px;
+    list-style-type: disc;
+    color: #cccccc;
+  }
+
+  // 强调文字
+  .resume-template .highlight {
+    color: #a5b4fc;
+    font-weight: bold;
+  }
+
+  // 链接样式
+  .resume-template a {
+    color: #90a7ff;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // 卡片模块
+  .resume-template .card {
+    background: #2a2a3d;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    margin-bottom: 20px;
+  }
+
+  // 小标签
+  .resume-template .tag {
+    background-color: #3d3f60;
+    color: #cdd1f9;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+
+  // 图标区域
+  .resume-template .icon {
+    color: #8f9df0;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  // 响应式支持
+  @media (max-width: 768px) {
+    .resume-template {
+      padding: 16px;
+    }
+
+    .resume-template h1 {
+      font-size: 22px;
+    }
+
+    .resume-template h2 {
+      font-size: 18px;
+    }
+  }
+}

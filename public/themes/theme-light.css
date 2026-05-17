@@ -1,0 +1,85 @@
+.theme-light .text-primary-text {
+  color: #2c3e50;
+}
+.theme-light .resume-template {
+  background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+  background-color: #f9f9fc;
+  color: #2c3e50;
+  padding: 32px;
+  border-radius: 16px;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+.theme-light .resume-template h1 {
+  font-size: 28px;
+  color: #1a1a1a;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #e0e4f0;
+  padding-bottom: 6px;
+}
+.theme-light .resume-template h2 {
+  font-size: 22px;
+  color: #34495e;
+  margin: 20px 0 10px;
+  font-weight: 600;
+}
+.theme-light .resume-template h3 {
+  font-size: 18px;
+  color: #566573;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.theme-light .resume-template hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 24px 0;
+}
+.theme-light .resume-template ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #3b4a6b;
+}
+.theme-light .resume-template .highlight {
+  color: #007acc;
+  font-weight: bold;
+}
+.theme-light .resume-template a {
+  color: #007acc;
+  text-decoration: none;
+}
+.theme-light .resume-template a:hover {
+  text-decoration: underline;
+}
+.theme-light .resume-template .card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+.theme-light .resume-template .icon {
+  color: #3498db;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.theme-light .resume-template .tag {
+  background-color: #e6f2ff;
+  color: #005c99;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+@media (max-width: 768px) {
+  .theme-light .resume-template {
+    padding: 16px;
+  }
+  .theme-light .resume-template h1 {
+    font-size: 22px;
+  }
+  .theme-light .resume-template h2 {
+    font-size: 18px;
+  }
+}

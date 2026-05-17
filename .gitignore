@@ -1,9 +1,17 @@
 .DS_Store
 node_modules
 /dist
+ResumeApp/
+backend/uploads/
 
 
 # local env files
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
 .env.local
 .env.*.local
 

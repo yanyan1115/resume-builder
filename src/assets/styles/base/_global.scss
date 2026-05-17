@@ -1,0 +1,38 @@
+@use './fonts' as *; 
+@use './variables' as *; 
+
+// 全局重置
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $primary-font;
+  background: $soft-mint;
+  color: $primary-text;
+  line-height: 1.6;
+}
+
+// 通用样式
+a {
+  color: $primary-blue;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+// 动效
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,24 @@
+// src/assets/styles/index.scss
+
+
+// 导入基础样式
+// 导入基础变量文件
+@use './base/variables' as *;
+// 导入字体样式
+@use './base/fonts' as *;  
+// 导入其他基础样式
+@use './base/global' as *;
+
+
+// 导入主题样式
+@use './themes/theme-light' as light;
+@use './themes/theme-dark' as dark;
+@use './themes/theme-blue' as blue;
+@use './themes/theme-purple' as purple;
+@use './themes/theme-pink' as pink;
+@use './themes/theme-red' as red;
+
+
+// 导入组件样式
+@use './components/button' as *;
+@use './components/card' as *;

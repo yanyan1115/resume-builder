@@ -1,0 +1,85 @@
+.theme-blue .text-primary-text {
+  color: #2c3e50;
+}
+.theme-blue .resume-template {
+  background-image: linear-gradient(to top, #0c3483 0%, #a2b6df 100%, #6b8cce 100%, #a2b6df 100%);
+  background-color: #f4f6fc;
+  color: #2c3e50;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+}
+.theme-blue .resume-template h1 {
+  font-size: 28px;
+  color: #1f2d5a;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #b0c4f0;
+  padding-bottom: 6px;
+}
+.theme-blue .resume-template h2 {
+  font-size: 22px;
+  color: #2f3c75;
+  margin: 20px 0 10px;
+  font-weight: 600;
+}
+.theme-blue .resume-template h3 {
+  font-size: 18px;
+  color: #3b4a6b;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.theme-blue .resume-template hr {
+  border: none;
+  border-top: 1px solid #ccd6f6;
+  margin: 24px 0;
+}
+.theme-blue .resume-template ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #3b4a6b;
+}
+.theme-blue .resume-template .highlight {
+  color: #1a237e;
+  font-weight: bold;
+}
+.theme-blue .resume-template a {
+  color: #3f51b5;
+  text-decoration: none;
+}
+.theme-blue .resume-template a:hover {
+  text-decoration: underline;
+}
+.theme-blue .resume-template .card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+.theme-blue .resume-template .icon {
+  color: #5c6bc0;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.theme-blue .resume-template .tag {
+  background-color: #d6e0f5;
+  color: #1e2f5a;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+@media (max-width: 768px) {
+  .theme-blue .resume-template {
+    padding: 16px;
+  }
+  .theme-blue .resume-template h1 {
+    font-size: 22px;
+  }
+  .theme-blue .resume-template h2 {
+    font-size: 18px;
+  }
+}

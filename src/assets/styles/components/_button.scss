@@ -1,0 +1,32 @@
+@use '../base/variables' as *; 
+
+// 主按钮
+.btn-primary {
+    background: $gradient-primary-green;
+    border-radius: $button-radius;
+    color: $light-text;
+    padding: $base-padding 30px;
+    box-shadow: $button-shadow;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $button-shadow-hover;
+    }
+  }
+  
+  // 次按钮
+  .btn-secondary {
+    background: $gradient-primary-blue;
+    border-radius: $button-radius;
+    color: $light-text;
+    padding: $base-padding 30px;
+    box-shadow: $button-shadow;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $button-shadow-hover;
+    }
+  }
+  

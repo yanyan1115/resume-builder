@@ -1,0 +1,13 @@
+// 全局字体
+$primary-font: "Microsoft JhengHei Light", "Dancing Script", system-ui, PingFang SC, Helvetica, sans-serif;
+
+// 字体特效
+$welcome-font: "Microsoft JhengHei Light";
+$letter-spacing: 1px;
+$italic-font: italic;
+
+// 花体字样式
+$floral-font: "Dancing Script", cursive;
+
+// 特殊文本
+$emotion-font: $primary-font, $italic-font;

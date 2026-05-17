@@ -1,0 +1,85 @@
+.theme-red .text-primary-text {
+  color: #f0f0f0;
+}
+.theme-red .resume-template {
+  background-image: linear-gradient(to top, #dbdcd7 0%, #dddcd7 24%, #e2c9cc 30%, #e7627d 46%, #b8235a 59%, #801357 71%, #3d1635 84%, #1c1a27 100%);
+  background-color: #1e1e2f;
+  color: #f0f0f0;
+  padding: 32px;
+  border-radius: 16px;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.theme-red .resume-template h1 {
+  font-size: 28px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #444a6d;
+  padding-bottom: 6px;
+}
+.theme-red .resume-template h2 {
+  font-size: 22px;
+  color: #d0d4f5;
+  margin: 20px 0 10px;
+  font-weight: 600;
+}
+.theme-red .resume-template h3 {
+  font-size: 18px;
+  color: #c0c4e4;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.theme-red .resume-template hr {
+  border: none;
+  border-top: 1px solid #3a3f5a;
+  margin: 24px 0;
+}
+.theme-red .resume-template ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #cccccc;
+}
+.theme-red .resume-template .highlight {
+  color: #a5b4fc;
+  font-weight: bold;
+}
+.theme-red .resume-template a {
+  color: #90a7ff;
+  text-decoration: none;
+}
+.theme-red .resume-template a:hover {
+  text-decoration: underline;
+}
+.theme-red .resume-template .card {
+  background: #2a2a3d;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+  margin-bottom: 20px;
+}
+.theme-red .resume-template .tag {
+  background-color: #3d3f60;
+  color: #cdd1f9;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+.theme-red .resume-template .icon {
+  color: #8f9df0;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+@media (max-width: 768px) {
+  .theme-red .resume-template {
+    padding: 16px;
+  }
+  .theme-red .resume-template h1 {
+    font-size: 22px;
+  }
+  .theme-red .resume-template h2 {
+    font-size: 18px;
+  }
+}

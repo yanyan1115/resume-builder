@@ -1,0 +1,27 @@
+@use '../base/variables' as *; 
+@use '../base/fonts' as *; 
+
+// 卡片样式
+.card {
+    background: #fff;
+    border-radius: $card-radius;
+    padding: $card-padding;
+    box-shadow: $card-shadow;
+    animation: fadeIn 1s ease;
+  
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    }
+  
+    .card-header {
+      font-family: $floral-font;
+      font-size: 1.2rem;
+    }
+  
+    .card-body {
+      font-size: 1rem;
+      color: $secondary-text;
+    }
+  }
+  
