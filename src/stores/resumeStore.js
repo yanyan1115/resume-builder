@@ -5,6 +5,7 @@ import {
   migrateLegacyResume,
   normalizeCanonicalResume
 } from '@/schemas/resumeSchema'
+import { resumeApi } from '@/api/resumeApi'
 
 const readJson = (key) => {
   try {
@@ -197,6 +198,92 @@ export const useResumeStore = defineStore('resume', {
       }
 
       this.persistDrafts()
+      // 异步云同步，不阻塞本地操作
+      this.syncDraftToBackend(resume)
+    },
+
+    // ── 云同步（local-first，仅登录用户，失败静默） ──────────────────
+
+    isLoggedIn() {
+      return !!localStorage.getItem('token')
+    },
+
+    // 将单条本地草稿同步到后端（create 或 update）
+    async syncDraftToBackend(draft) {
+      if (!this.isLoggedIn()) return
+      try {
+        const backendId = draft.settings?.backendId
+        if (backendId) {
+          await resumeApi.update(backendId, draft)
+        } else {
+          const res = await resumeApi.create(draft)
+          const newBackendId = res.data._id
+          // 把 backendId 写回本地草稿
+          const target = this.drafts.find((d) => d.id === draft.id)
+          if (target) {
+            target.settings = { ...target.settings, backendId: newBackendId }
+            if (this.activeDraftId === draft.id) {
+              this.activeResume = normalizeCanonicalResume(target)
+            }
+            this.persistDrafts()
+          }
+        }
+      } catch {
+        // 网络失败静默，本地数据已保存
+      }
+    },
+
+    // 从后端拉取所有草稿，合并到本地（后端优先，本地新增保留）
+    async loadFromBackend() {
+      if (!this.isLoggedIn()) return
+      try {
+        const res = await resumeApi.list()
+        const remoteDrafts = res.data
+        if (!Array.isArray(remoteDrafts) || remoteDrafts.length === 0) return
+
+        // 以 backendId 为 key 建索引
+        const localByBackendId = {}
+        this.drafts.forEach((d) => {
+          if (d.settings?.backendId) localByBackendId[d.settings.backendId] = d
+        })
+
+        remoteDrafts.forEach((remote) => {
+          const canonical = remote.resume
+            ? normalizeCanonicalResume({
+                ...remote.resume,
+                settings: { ...remote.resume.settings, backendId: remote._id }
+              })
+            : null
+          if (!canonical) return
+
+          const existing = localByBackendId[remote._id]
+          if (existing) {
+            // 比较 updatedAt，后端更新则覆盖本地
+            const localTime = Date.parse(existing.settings?.updatedAt || '') || 0
+            const remoteTime = Date.parse(remote.updatedAt || '') || 0
+            if (remoteTime > localTime) {
+              const idx = this.drafts.findIndex((d) => d.id === existing.id)
+              if (idx >= 0) this.drafts.splice(idx, 1, canonical)
+            }
+          } else {
+            this.drafts.push(canonical)
+          }
+        })
+
+        this.persistDrafts()
+      } catch {
+        // 拉取失败静默
+      }
+    },
+
+    // 删除时同步后端
+    async deleteDraftWithSync(draftId) {
+      const draft = this.drafts.find((d) => d.id === draftId)
+      const backendId = draft?.settings?.backendId
+      this.deleteDraft(draftId)
+      if (backendId && this.isLoggedIn()) {
+        try { await resumeApi.remove(backendId) } catch { /* 静默 */ }
+      }
     }
   }
 })

@@ -98,7 +98,7 @@ export default defineComponent({
       const draft = this.resumeStore.drafts.find((item) => item.id === draftId)
       const confirmed = window.confirm(`Delete "${draft?.title || 'Untitled Resume'}"?`)
       if (!confirmed) return
-      this.resumeStore.deleteDraft(draftId)
+      this.resumeStore.deleteDraftWithSync(draftId)
     },
 
     formatDate(value) {

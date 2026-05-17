@@ -29,12 +29,18 @@
 </template>
 
 <script>
+import { useResumeStore } from '@/stores/resumeStore'
+
 export default {
   name: 'App',
   data() {
     return {
       menuOpen: false
     }
+  },
+  mounted() {
+    const store = useResumeStore()
+    store.loadFromBackend()
   },
   methods: {
     toggleMenu() {

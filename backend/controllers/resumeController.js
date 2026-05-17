@@ -75,19 +75,18 @@ const createResume = async (req, res) => {
 // 更新简历
 const updateResume = async (req, res) => {
     try {
-        // 验证更新数据，防止更新空字段
         const updateFields = {};
-        const { title, template, personalInfo, experience, education, resume } = toLegacyFields(req.body);
+        const { title, template, personalInfo, experience, education, resume: canonicalResume } = toLegacyFields(req.body);
         if (title) updateFields.title = title;
         if (template) updateFields.template = template;
-        if (resume) updateFields.resume = resume;
+        if (canonicalResume) updateFields.resume = canonicalResume;
         if (personalInfo) updateFields.personalInfo = personalInfo;
         if (experience) updateFields.experience = experience;
         if (education) updateFields.education = education;
 
-        const resume = await Resume.findByIdAndUpdate(req.params.id, updateFields, { new: true });
-        if (!resume) return res.status(404).json({ message: '简历未找到' });
-        res.json(resume);
+        const updated = await Resume.findByIdAndUpdate(req.params.id, updateFields, { new: true });
+        if (!updated) return res.status(404).json({ message: '简历未找到' });
+        res.json(updated);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
