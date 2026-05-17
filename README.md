@@ -127,6 +127,7 @@ Web app 可以在不启动后端的情况下使用本地草稿模式。后端简
 - [Release Notes](docs/RELEASE_NOTES.md)
 - [Release Checklist](docs/RELEASE_CHECKLIST.md)
 - [示例简历](docs/SAMPLE_RESUME.md)
+- [Claude Code 交接文档](docs/HANDOFF_FOR_CLAUDE.md)
 - [贡献指南](CONTRIBUTING.md)
 
 ## 路线图摘要
@@ -286,6 +287,7 @@ The web app works in local-only draft mode without the backend. Backend resume s
 - [Release Notes](docs/RELEASE_NOTES.md)
 - [Release Checklist](docs/RELEASE_CHECKLIST.md)
 - [Sample Resume](docs/SAMPLE_RESUME.md)
+- [Claude Code Handoff](docs/HANDOFF_FOR_CLAUDE.md)
 - [Contribution Guide](CONTRIBUTING.md)
 
 ## Roadmap Summary
