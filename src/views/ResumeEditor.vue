@@ -712,11 +712,10 @@ export default {
 <style scoped>
 .editor-shell {
   display: grid;
-  grid-template-columns: minmax(360px, 520px) minmax(520px, 1fr);
-  gap: 24px;
-  min-height: 100vh;
-  padding: 24px;
-  background: linear-gradient(90deg, #2196f3, #4caf50);
+  grid-template-columns: minmax(360px, 480px) minmax(480px, 1fr);
+  gap: 0;
+  min-height: calc(100vh - 56px);
+  background: #f0f2f5;
 }
 
 .editor-panel,
@@ -725,27 +724,29 @@ export default {
 }
 
 .editor-panel {
-  height: calc(100vh - 48px);
-  overflow: auto;
-  padding: 24px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 24px 28px;
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+  border-right: 1px solid #e5e7eb;
 }
 
 .preview-panel {
-  height: calc(100vh - 48px);
-  overflow: auto;
-  background: #ffffff;
-  border-radius: 8px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 24px;
+  background: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.editor-header h2 {
-  margin: 0 0 24px;
-  color: #333333;
-  font-family: 'Microsoft JhengHei Light', 'Dancing Script', system-ui;
-  font-size: 32px;
-  font-weight: 600;
+/* give the preview template a paper-like card */
+.preview-panel > :deep(*) {
+  width: 100%;
+  max-width: 780px;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 .editor-header {
@@ -753,30 +754,42 @@ export default {
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+  margin-bottom: 20px;
 }
 
 .editor-header h2 {
-  margin-bottom: 6px;
+  margin: 0 0 4px;
+  color: #111827;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .editor-header p {
-  margin: 0 0 18px;
-  color: #667085;
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
 }
 
 .drafts-link {
   flex: 0 0 auto;
-  padding: 8px 12px;
-  border: 1px solid #d8dee4;
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
-  color: #2563eb;
+  color: #374151;
   text-decoration: none;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.drafts-link:hover {
+  border-color: #1d4ed8;
+  color: #1d4ed8;
 }
 
 .form-section {
   padding: 18px 0;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #e5e7eb;
 }
 
 .form-section:first-child {
@@ -785,16 +798,16 @@ export default {
 }
 
 .form-section h3 {
-  margin: 0 0 16px;
-  color: #333333;
-  font-size: 18px;
+  margin: 0 0 14px;
+  color: #111827;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .field-note {
   margin: 4px 0 0;
-  color: #666666;
-  font-size: 13px;
+  color: #6b7280;
+  font-size: 12px;
 }
 
 .salary-row,
@@ -815,11 +828,12 @@ export default {
 .section-editor,
 .item-editor {
   display: grid;
-  gap: 12px;
-  padding: 14px;
-  margin-bottom: 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fafafa;
 }
 
 .section-title-input {
@@ -829,7 +843,7 @@ export default {
 .skills-editor,
 .items-editor {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .w-full {
@@ -839,11 +853,16 @@ export default {
 @media (max-width: 1024px) {
   .editor-shell {
     grid-template-columns: 1fr;
+    min-height: auto;
   }
 
   .editor-panel,
   .preview-panel {
     height: auto;
+  }
+
+  .preview-panel {
+    padding: 16px;
   }
 }
 
@@ -870,8 +889,14 @@ export default {
   .preview-panel {
     height: auto;
     overflow: visible;
-    border-radius: 0;
+    padding: 0;
     background: #ffffff;
+    display: block;
+  }
+
+  .preview-panel > :deep(*) {
+    max-width: none;
+    box-shadow: none;
   }
 }
 </style>

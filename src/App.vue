@@ -1,36 +1,27 @@
 <template>
   <div id="app">
-    <!-- Loading 动画 -->
-    <div v-if="loading" class="loading-container">
-      <div class="loader"></div>
-      <p class="loading-text">Loading🧾…</p>
-    </div>
+    <nav class="app-nav">
+      <div class="nav-inner">
+        <router-link to="/" class="nav-logo">Resume Builder</router-link>
 
-    <!-- 小装饰泡泡背景 -->
-    <div class="floating-bubbles"></div>
-
-    <!-- 主导航栏 -->
-    <nav>
-      <div class="nav-header">
-        <span class="logo">
-          <span class="logo-icon">📄</span> Resume Builder
-        </span>
-        <button class="burger" @click="toggleMenu">
-          ☰
+        <button class="nav-burger" :aria-expanded="menuOpen" @click="toggleMenu">
+          <span class="burger-bar" />
+          <span class="burger-bar" />
+          <span class="burger-bar" />
         </button>
-      </div>
-      <div class="nav-links" :class="{ open: menuOpen }">
-        <router-link to="/"><span>🏠</span> Home</router-link>
-        <router-link to="/login"><span>🔑</span> Login</router-link>
-        <router-link to="/register"><span>📝</span> Register</router-link>
-        <router-link to="/drafts"><span>📚</span> Drafts</router-link>
-        <router-link to="/editor"><span>📝</span> Resume Editing</router-link>
-        <router-link to="/preview"><span>👀</span> Resume Preview</router-link>
-        <router-link to="/templates"><span>🎨</span> Choose Template</router-link>
+
+        <div class="nav-links" :class="{ open: menuOpen }">
+          <router-link to="/" exact>Home</router-link>
+          <router-link to="/drafts">Drafts</router-link>
+          <router-link to="/editor">Editor</router-link>
+          <router-link to="/preview">Preview</router-link>
+          <router-link to="/templates">Templates</router-link>
+          <router-link to="/login">Login</router-link>
+          <router-link to="/register">Register</router-link>
+        </div>
       </div>
     </nav>
 
-    <!-- 页面切换动画 -->
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
@@ -42,220 +33,146 @@ export default {
   name: 'App',
   data() {
     return {
-      menuOpen: false,
-      loading: true, // 初始加载状态
-    };
-  },
-  mounted() {
-    // 模拟加载 1.5 秒后消失
-    setTimeout(() => {
-      this.loading = false;
-    }, 1500);
+      menuOpen: false
+    }
   },
   methods: {
     toggleMenu() {
-      this.menuOpen = !this.menuOpen;
+      this.menuOpen = !this.menuOpen
     }
   }
-};
+}
 </script>
 
-
-
 <style scoped>
-/* 通用字体设置 */
-* {
-  box-sizing: border-box;
-  font-family: 'Microsoft JhengHei Light', sans-serif;
+#app {
+  min-height: 100vh;
+  background: #f5f7fa;
 }
 
-/* 导航栏整体样式 */
-nav {
-  background-color: #fffafc;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 12px 20px;
-  border-radius: 16px;
-  margin: 12px auto;
-  max-width: 100%;
+/* ── Nav ── */
+.app-nav {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-/* 顶部logo和汉堡按钮 */
-.nav-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-/* logo样式，图标+文字+动画 */
-.logo {
-  font-size: 20px;
-  font-weight: bold;
-  color: #5c7dd6;
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  animation: logoPop 0.6s ease-out;
-  user-select: none;
+  gap: 32px;
 }
 
-.logo-icon {
-  font-size: 24px;
-  transform: translateY(-1px);
+.nav-logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
 }
 
-/* logo进入时的动画 */
-@keyframes logoPop {
-  0% {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
 }
 
-/* 汉堡按钮 */
-.burger {
-  font-size: 24px;
+.nav-links a {
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-links a:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.nav-links a.router-link-active,
+.nav-links a.router-link-exact-active {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+/* ── Burger (mobile) ── */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #466edc;
-  display: none;
+  margin-left: auto;
 }
 
-/* 链接列表（默认横向） */
-.nav-links {
-  display: flex;
-  gap: 16px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+.burger-bar {
+  display: block;
+  height: 2px;
+  background: #374151;
+  border-radius: 1px;
+  transition: opacity 0.15s;
 }
 
-router-link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 16px;
-  color: #5e5e5e;
-  transition: all 0.3s ease;
-  background-color: #fdf0f5;
-  font-weight: 500;
+/* ── Page transition ── */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.18s ease;
 }
 
-router-link:hover {
-  background-color: #f7dbe6;
-  color: #d65c8a;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(214, 92, 138, 0.15);
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
-.router-link-exact-active {
-  background-color: #ffeaf1;
-  color: #c74279;
-  font-weight: bold;
-}
-
-
-
-/* 响应式样式 - 手机端适配 */
+/* ── Mobile ── */
 @media (max-width: 768px) {
-  .burger {
-    display: block;
+  .nav-burger {
+    display: flex;
   }
 
   .nav-links {
     display: none;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
+    align-items: stretch;
+    gap: 2px;
+    padding: 8px 16px 12px;
   }
 
   .nav-links.open {
     display: flex;
   }
 
-  router-link {
-    font-size: 17px;
-    padding: 10px 14px;
-  }
-
-
-  /* 背景装饰：小泡泡效果 */
-.floating-bubbles::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(circle, rgba(255, 192, 203, 0.2) 1px, transparent 1px);
-  background-size: 40px 40px;
-  z-index: -1;
-  animation: float 15s linear infinite;
-  opacity: 0.5;
-}
-
-@keyframes float {
-  0% { background-position: 0 0; }
-  100% { background-position: 100px 100px; }
-}
-
-
-/* 页面切换动画 */
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-
-
-/* Loading 动画 */
-.loading-container {
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #fffafc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #f7dbe6;
-  border-top: 5px solid #d65c8a;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.loading-text {
-  margin-top: 16px;
-  font-size: 16px;
-  color: #d65c8a;
-  font-weight: 500;
-  font-family: 'Microsoft JhengHei Light', sans-serif;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+  .nav-links a {
+    padding: 10px 12px;
   }
 }
 
+@media print {
+  .app-nav {
+    display: none;
+  }
 }
 </style>
