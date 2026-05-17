@@ -141,6 +141,16 @@ The web app works in local-only draft mode without the backend. Backend resume s
 - Browser-native print is the recommended PDF path; legacy screenshot PDF remains available but is lower quality.
 - Local mobile experiments are not included in this beta release.
 
+## Mobile App Status
+
+This beta release focuses on the web application. Earlier local mobile experiments are intentionally excluded from the public beta branch to keep the release scope clear and runnable.
+
+If mobile support returns later, it should start as a fresh plan around the stabilized web product, likely as a separate repository or package that consumes the same resume schema.
+
+## Acknowledgements
+
+This beta was shaped and directed by Cora, with OpenAI Codex assisting as an AI coding collaborator during documentation, refactoring, QA, and release preparation.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

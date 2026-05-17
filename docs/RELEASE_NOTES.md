@@ -29,8 +29,13 @@ This beta draft packages the first usable open-source product loop for Resume Bu
 - Backend draft synchronization is not part of this beta.
 - AI job-description matching and resume suggestions are not part of this beta.
 - Uploaded template previews are not yet a full template contribution workflow.
+- Mobile app experiments are not included in this beta release.
 - Bundle size warnings remain and should be handled in a later dependency cleanup/performance pass.
 - `@achrinza/node-ipc` reports an engine-range warning under Node 24 during npm maintenance commands; the app still builds.
+
+### Acknowledgements
+
+This beta was shaped and directed by Cora, with OpenAI Codex assisting as an AI coding collaborator during documentation, refactoring, QA, and release preparation.
 
 Before tagging this release, run the checks in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md).
 

@@ -221,6 +221,12 @@ Exit criteria:
 
 - Users can improve resumes against a job description without losing manual control.
 
+## Future: Mobile App
+
+Mobile support is intentionally out of scope for `v0.1.0-beta`.
+
+If mobile work resumes, it should be planned after the web product stabilizes further. The preferred direction is a separate repository or package that reuses the canonical resume schema and treats the web app as the product baseline, rather than carrying forward an old experiment by default.
+
 ## Suggested Issue Labels
 
 - `docs`
