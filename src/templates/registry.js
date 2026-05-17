@@ -1,5 +1,6 @@
 import ClassicTemplate from './ClassicTemplate.vue'
 import ModernTwoColumnTemplate from './ModernTwoColumnTemplate.vue'
+import FreshGradTemplate from './FreshGradTemplate.vue'
 
 export const templateRegistry = [
   {
@@ -16,6 +17,14 @@ export const templateRegistry = [
     scenario: 'Compact professional resume with sidebar',
     preview: '',
     component: ModernTwoColumnTemplate,
+    themeSupport: ['theme-light', 'theme-dark', 'theme-blue', 'theme-purple', 'theme-pink', 'theme-red']
+  },
+  {
+    id: 'fresh-grad',
+    name: 'Fresh Graduate',
+    scenario: 'Clean header-banner layout for students and new grads',
+    preview: '',
+    component: FreshGradTemplate,
     themeSupport: ['theme-light', 'theme-dark', 'theme-blue', 'theme-purple', 'theme-pink', 'theme-red']
   }
 ]
